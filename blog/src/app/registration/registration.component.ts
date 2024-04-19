@@ -27,12 +27,13 @@ export class RegistrationComponent {
     'Strong': 'green'
   };
   itemForm: FormGroup;
-  formModel: any = { role: null, email: '', password: '', username: '' , confirmPassword: ''};
+  formModel: any = { role: "user", email: '', password: '', username: '' };
+  userModel: any = { role: '', email: '', password: '', username: '' , confirmPassword: ''};
   showMessage: boolean = false;
   showError:boolean=false;
   responseMessage: any;
  
-  constructor(public router: Router, private bookService: HttpService, private formBuilder: FormBuilder) {
+  constructor(public router: Router, private httpService: HttpService, private formBuilder: FormBuilder) {
  
     this.itemForm = this.formBuilder.group({
       username: [this.formModel.username, Validators.required],
@@ -53,33 +54,26 @@ export class RegistrationComponent {
   onRegister() {
  
     // Call the service to register the user
-    this.bookService.registerUser(this.itemForm.value).subscribe(
-      (response: any) => {
+    if (this.itemForm.valid) {
+      this.userModel.role = this.itemForm.value.role;
+      this.userModel.email = this.itemForm.value.email;
+      this.userModel.username = this.itemForm.value.username;
+      this.userModel.password = this.itemForm.value.password;
+
+      this.showMessage = false;
+      this.httpService.registerUser(this.userModel).subscribe(data => {
         this.showMessage = true;
-        if(response==null){
-          this.showError=false;
-          this.responseMessage="User Already Exist";
-        }else{
-          if(this.itemForm.get('role')?.value==='HOSPITAL'){
-            this.responseMessage ='Welcome '+this.itemForm.get('username')?.value+' to our page!!. You are an Admin now';
-           //alert("Welcome "+this.itemForm.get('username')?.value)
-            this.itemForm.reset();
-          }
-          else{
-            this.responseMessage ='Welcome '+this.itemForm.get('username')?.value+' to our page!!. You are an '+this.itemForm.get('role')?.value+' now';
-            //alert("Welcome "+this.itemForm.get('username')?.value)
-            this.itemForm.reset();
-          }
-       
-        }
+        this.responseMessage = "Registration Succesfull";
+        this.itemForm.reset();
       },
-      (error: any) => {
-        this.showError = true;
-        this.responseMessage = 'An error occurred while registering.';
-      }
-    );
- 
-    console.log(this.itemForm.value);
+        (error: any) => {
+          this.showError = true;
+          this.responseMessage = 'An error occurred while registering.';
+        })
+    }
+    else {
+      this.itemForm.markAllAsTouched();
+    }
   }
  
  

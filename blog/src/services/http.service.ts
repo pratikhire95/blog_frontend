@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class HttpService {
-  public serverName = "http://localhost:4200"; // To get server name
+  public serverName = "http://127.0.0.1:8080"; // To get server name
   private headers: HttpHeaders;
   constructor(private http: HttpClient, private authService: AuthService) {
     this.headers = this.createHeaders();
@@ -31,7 +31,7 @@ export class HttpService {
   //it will generate the authorization token while login and add to the header
   Login(details: any): Observable<any> {
     return this.http.post(
-      this.serverName + '/api/user/login',
+      this.serverName + '/api/v1/login',
       details,
       this.getRequestOptions()
     );
@@ -40,7 +40,7 @@ export class HttpService {
   // register the user
   registerUser(details: any): Observable<any> {
     return this.http.post(
-      this.serverName + '/api/user/register',
+      this.serverName + '/api/v1/register',
       details,
       this.getRequestOptions()
     );

@@ -1,16 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
   <div class="container-fluid">
-    <a *ngIf="!IsLoggin"
+    <a *ngIf="!IsLoggin" 
     [routerLink]="['/home']"><img
-        class="navbar-brand"
-        src="../assets/img/logo.png"
+        class="img-fluid"
+        src="../assets/icons/logo.png"
         alt="Blog Application"
-        width="200px"
+        width="50px"
+        height="50px"
     /></a>
     <a *ngIf="IsLoggin"
     [routerLink]="['/dashboard']"><img
         class="navbar-brand"
-        src="../assets/img/logo.png"
+        src="../assets/icons/"
         alt="Blog Application"
         width="200px"
     /></a>
