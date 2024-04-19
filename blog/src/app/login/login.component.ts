@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   //to validate the login 
   onLogin() {
     if (this.itemForm.valid) {
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
             this.authService.SetRole(data.role);
             this.authService.SetUsername(data.username);
             this.authService.saveToken(data.token);
-            this.router.navigateByUrl('/dashboard');
+            this.router.navigateByUrl('/homepage');
 
             setTimeout(() => {
               window.location.reload();
@@ -61,7 +60,7 @@ export class LoginComponent implements OnInit {
       this.itemForm.markAllAsTouched();
     }
   }
-//to route to the registration
+  //to route to the registration
   registration() {
     this.router.navigateByUrl('/registration');
   }
