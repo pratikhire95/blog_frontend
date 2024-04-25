@@ -8,41 +8,41 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class HttpService {
-  public serverName = "http://127.0.0.1:8080"; // To get server name
+  public serverName = 'https://jsonplaceholder.typicode.com'; // To get server name
+
   private headers: HttpHeaders;
+
   constructor(private http: HttpClient, private authService: AuthService) {
     this.headers = this.createHeaders();
   }
+
   private createHeaders(): HttpHeaders {
-    const authToken = this.authService.getToken();
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
-    if (authToken) {
-      headers = headers.set('Authorization', `Bearer ${authToken}`);
-    }
     return headers;
   }
 
   private getRequestOptions(): { headers: HttpHeaders } {
     return { headers: this.headers };
   }
- 
 
-  //it will generate the authorization token while login and add to the header
-  Login(details: any): Observable<any> {
-    return this.http.post(
-      this.serverName + '/api/v1/login',
-      details,
-      this.getRequestOptions()
-    );
+  // To create the post for the particular user
+  createPost(post: any): Observable<any> {
+    return this.http.post<any>(`${this.serverName}/posts`, post, this.getRequestOptions());
   }
 
-  // register the user
-  registerUser(details: any): Observable<any> {
-    return this.http.post(
-      this.serverName + '/api/v1/register',
-      details,
-      this.getRequestOptions()
-    );
+  // To get the Posts list
+  getPost(): Observable<any> {
+    return this.http.get(`${this.serverName}/posts`);
+  }
+
+  // To get the maintenance list
+  getPostByUserId(userId: any): Observable<any> {
+    return this.http.get(`${this.serverName}/posts/${userId}`);
+  }
+
+  // To get the hospital list
+  getCommentsByPostId(postId: any): Observable<any> {
+    return this.http.get(`${this.serverName}//comments?postId=${postId}`);
   }
 }

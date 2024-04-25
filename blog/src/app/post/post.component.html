@@ -1,0 +1,49 @@
+<div class="mt-5 pt-5 col justify-content-center d-flex">
+  <div class="card col-4">
+    <div class="card-body px-4 py-5 px-md-5">
+      <form class="mb-3 mt-md-4" [formGroup]="postForm" (ngSubmit)="createPost()">
+        <div class="row text-center">
+          <h5>Create Your Blog</h5>
+          <div class="col-md-6 mb-4"></div>
+        </div>
+        <div class="form-outline mb-3">
+          <label for="title" class="form-label px-2">Title</label>
+   
+          <input type="text" name="title" formControlName="title" style="width: 280px; border-radius: 5px; border-color: #f6f6f6;border-width: 3px; border-style: solid;"/>
+          <div
+            *ngIf="
+              postForm.get('title')?.invalid &&
+              (postForm.get('title')?.dirty || postForm.get('title')?.touched)
+            "
+            class="ng-dirty"
+          >
+            <span class="text-danger">title Invalid.</span>
+          </div>
+        </div>
+   
+        <div class="form-outline mb-5">
+          <label for="body" class="form-label px-2 align-top">Body</label>
+          
+          <textarea type="text" name="body" formControlName="body" style="width: 280px; border-radius: 5px; border-color: #f6f6f6;border-width: 3px;"></textarea>
+          <div
+            *ngIf="
+              postForm.get('body')?.invalid &&
+              (postForm.get('body')?.dirty || postForm.get('body')?.touched)
+            "
+            class="ng-dirty"
+          >
+            <span class="text-danger">body Invalid.</span>
+          </div>
+        </div>
+        <button
+          type="create"
+          class="btn btn-primary btn-block mb-4"
+          [disabled]="postForm.invalid"
+        >
+         Create Post
+        </button>
+      </form>
+    </div>
+  </div>
+   
+</div>

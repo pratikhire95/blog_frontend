@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/services/auth.service';
 import { HttpService } from 'src/services/http.service';
  
 @Component({
@@ -33,7 +34,7 @@ export class RegistrationComponent {
   showError:boolean=false;
   responseMessage: any;
  
-  constructor(public router: Router, private httpService: HttpService, private formBuilder: FormBuilder) {
+  constructor(public router: Router, private authService: AuthService, private formBuilder: FormBuilder) {
  
     this.itemForm = this.formBuilder.group({
       username: [this.formModel.username, Validators.required],
@@ -61,15 +62,8 @@ export class RegistrationComponent {
       this.userModel.password = this.itemForm.value.password;
 
       this.showMessage = false;
-      this.httpService.registerUser(this.userModel).subscribe(data => {
-        this.showMessage = true;
-        this.responseMessage = "Registration Succesfull";
-        this.itemForm.reset();
-      },
-        (error: any) => {
-          this.showError = true;
-          this.responseMessage = 'An error occurred while registering.';
-        })
+      this.authService.register(this.itemForm.value.email,this.itemForm.value.password);
+      this.itemForm.reset();
     }
     else {
       this.itemForm.markAllAsTouched();

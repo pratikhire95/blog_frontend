@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid">
+    <a *ngIf="!isLoggedin" [routerLink]="['/home']" class="logo">Blogger</a>
+    <a *ngIf="isLoggedin" class="logo" [routerLink]="['/dashboard']">Blogger</a>
+
+    <button
+      type="button"
+      class="navbar-toggler"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse px-0 px-xl-5 px-md-5"
+      id="navbarCollapse"
+    >
+      <div class="navbar-nav">
+        <ul *ngIf="!isLoggedin" class="navbar-nav">
+          <li class="nav-item left-btn">
+            <a class="nav-link" [routerLink]="['/homepage']">Home</a>
+          </li>
+        </ul>
+        <ul *ngIf="isLoggedin" class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/post">Create Post</a>
+          </li>
+        </ul>
+        <ul *ngIf="isLoggedin" class="navbar-nav">
+          <li class="nav-item left-btn">
+            <a class="nav-link" [routerLink]="['/my-post']">View Post</a>
+          </li>
+        </ul>
+
+        <ul *ngIf="isLoggedin" class="navbar-nav">
+          <li class="nav-item left-btn">
+            <a class="nav-link" [routerLink]="['/dashboard']">Dashboard</a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-nav ms-auto justify-content-end">
+        <ul class="navbar-nav">
+          <li *ngIf="!isLoggedin" class="nav-item">
+            <button
+              class="btn btn-primary nav-item px-4 mx-3 mt-2 mt-xl-0 mt-md-0"
+              style="width: 110px"
+              [routerLink]="['/login']"
+            >
+              Login
+            </button>
+          </li>
+
+          <li *ngIf="!isLoggedin" class="nav-item">
+            <button
+              class="btn btn-dark nav-item px-4 mx-3 mt-2 mt-xl-0 mt-md-0"
+              style="width: 110px"
+              [routerLink]="['/registration']"
+            >
+              Register
+            </button>
+          </li>
+          <li *ngIf="isLoggedin" class="nav-item">
+            <button
+              class="btn btn-danger nav-item px-4 mx-3 mt-2 mt-xl-0 mt-md-0"
+              style="width: 110px"
+              (click)="logout()"
+              [routerLink]="['/login']"
+            >
+              LogOut
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

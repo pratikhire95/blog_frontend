@@ -1,0 +1,13 @@
+
+<div class="container-fluid mt-4 pt-4">
+    <div class="row">
+      <div class="col-4 d-flex justify-content-center mt-3 pt-3" *ngFor="let post of userPostList">
+        <div class="card" style="width: 20rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{post.title}}</h5>
+            <p class="card-text">{{post.body}}</p>
+            <a href="#" class="btn btn-primary">Comment</a>
+          </div>
+        </div>
+      </div>
+  </div>

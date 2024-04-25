@@ -14,54 +14,44 @@ export class LoginComponent implements OnInit {
   formModel: any = {};
   showError: boolean = false;
   errorMessage: any;
-  constructor(
-    public router: Router,
-    public httpService: HttpService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) {
+  show: boolean = false;
+
+  constructor(public router: Router, private formBuilder: FormBuilder, private authService: AuthService) {
     this.itemForm = this.formBuilder.group({
-      username: [this.formModel.username, [Validators.required]],
+      email: [this.formModel.email, [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       password: [this.formModel.password, [Validators.required]],
     });
   }
 
   ngOnInit(): void { }
-  //to validate the login 
+
+  onload() {
+    window.location.reload()
+  }
+
+  toggle() {
+    const password = document.getElementById('password');
+    const type = password?.getAttribute('type') === 'password' ? 'text' : 'password';
+    password?.setAttribute('type', type);
+  }
+
   onLogin() {
     if (this.itemForm.valid) {
       this.showError = false;
-      this.httpService.Login(this.itemForm.value).subscribe(
-        (data: any) => {
-          if (data.userNo != 0) {
-            // localStorage.setItem('role', data.role);
-            this.authService.SetRole(data.role);
-            this.authService.SetUsername(data.username);
-            this.authService.saveToken(data.token);
-            this.router.navigateByUrl('/homepage');
+      this.authService.login(this.itemForm.value.email, this.itemForm.value.password);
+      this.itemForm.reset();
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          } else {
-            this.showError = true;
-            this.errorMessage = 'Wrong User or Password';
-          }
-        },
-        (error) => {
-          // Handle error
-          this.showError = true;
-          this.errorMessage =
-            'An error occurred while logging in. Please try again later.';
-          console.error('Login error:', error);
-        }
-      );
     } else {
+      // Form validation failed
       this.itemForm.markAllAsTouched();
     }
   }
-  //to route to the registration
+
   registration() {
     this.router.navigateByUrl('/registration');
+  }
+
+  signInWithGoogle() {
+    this.authService.googleSignIn();
   }
 }

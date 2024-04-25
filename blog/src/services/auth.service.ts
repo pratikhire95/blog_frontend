@@ -1,50 +1,86 @@
 import { Injectable } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider} from '@angular/fire/auth'
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private token: string | null = null;
-  private isLoggedIn: boolean = false;
 
-  constructor() {}
-
-  // Method to save token received from login
-  saveToken(token: string) {
-    this.token = token;
-    this.isLoggedIn = true;
-    // Optionally, you can save the token to local storage or a cookie for persistence
-    localStorage.setItem('token', token);
-  }
-  SetRole(role: any) {
-    localStorage.setItem('role', role);
-  }
-  get getRole(): string | null {
-    return localStorage.getItem('role');
+  constructor(private fireauth : AngularFireAuth, private router : Router) { 
   }
 
+  // login method
+  login(email : string, password : string) {
+    this.fireauth.signInWithEmailAndPassword(email,password).then( res => {
+        localStorage.setItem('token',JSON.stringify(res.user?.refreshToken));
+        localStorage.setItem('userid', JSON.stringify(res.user?.uid));
+        localStorage.setItem('email',JSON.stringify(res.user?.email));
+        if(res.user?.emailVerified == true) {
+          
+          window.location.replace('/dashboard');
+        } else {
+          this.router.navigate(['/verify-email']);
+        }
 
-  SetUsername(username : any)
-  {
-    localStorage.setItem('username',username);
+    }, err => {
+        alert(err.message);
+        this.router.navigate(['/login']);
+    })
   }
 
-  get getUsername():string | null{
-    return localStorage.getItem('username');
+  // register method
+  register(email : string, password : string) {
+    this.fireauth.createUserWithEmailAndPassword(email, password).then( res => {
+      alert('Registration Successful');
+      this.sendEmailForVarification(res.user);
+    }, err => {
+      alert(err.message);
+      this.router.navigate(['/register']);
+    })
   }
-  // Method to retrieve login status
-  get getLoginStatus(): boolean {
-    return !!localStorage.getItem('token');
-  }
-  getToken(): string | null {
-    this.token = localStorage.getItem('token');
-    return this.token;
-  }
+
+  // sign out
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('username');
-    this.token = null;
-    this.isLoggedIn = false;
+    this.fireauth.signOut().then( () => {
+      sessionStorage.clear();
+      localStorage.removeItem('token');
+      window.location.replace('/dashboard');
+    }, err => {
+      alert(err.message);
+    })
   }
+
+  // forgot password
+  forgotPassword(email : string) {
+      this.fireauth.sendPasswordResetEmail(email).then(() => {
+        this.router.navigate(['/verify-email']);
+      }, err => {
+        alert('Something went wrong');
+      })
+  }
+
+  // email varification
+  sendEmailForVarification(user : any) {
+    console.log(user);
+    user.sendEmailVerification().then((res : any) => {
+      this.router.navigate(['/verify-email']);
+    }, (err : any) => {
+      alert('Something went wrong. Not able to send mail to your email.')
+    })
+  }
+
+  //sign in with google
+  googleSignIn() {
+    return this.fireauth.signInWithPopup(new GoogleAuthProvider).then(res => {
+      localStorage.setItem('token',JSON.stringify(res.user?.refreshToken));
+      localStorage.setItem('userid', JSON.stringify(res.user?.uid));
+      this.router.navigate(['/dashboard']);
+      
+    }, err => {
+      alert(err.message);
+    })
+  }
+
+
 }
