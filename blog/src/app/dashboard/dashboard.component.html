@@ -34,7 +34,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle" style="margin-right: 21rem;">Comments</h5>
+          <h5
+            class="modal-title"
+            id="exampleModalLongTitle"
+            style="margin-right: 21rem"
+          >
+            Comments
+          </h5>
 
           <button
             type="button"
@@ -55,8 +61,21 @@
           </ul>
         </div>
         <div class="modal-footer">
-          <input type="text" name="body" [(ngModel)]="body" style="width: 280px; border-radius: 5px; border-color: #f6f6f6;border-width: 3px; border-style: solid;"/>
-          <button type="button" class="btn btn-primary" (click)="addComments()">Add Comments</button>
+          <input
+            type="text"
+            name="body"
+            [(ngModel)]="body"
+            style="
+              width: 280px;
+              border-radius: 5px;
+              border-color: #f6f6f6;
+              border-width: 3px;
+              border-style: solid;
+            "
+          />
+          <button type="button" class="btn btn-primary" (click)="addComments()">
+            Add Comments
+          </button>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { HttpService } from 'src/services/http.service';
+import { MypostComponent } from '../mypost/mypost.component';
 
 @Component({
   selector: 'app-post',
@@ -18,7 +19,8 @@ export class PostComponent implements OnInit {
     public router: Router,
     public httpService: HttpService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+ 
   ) {
     this.postForm = this.formBuilder.group({
       title: [this.formModel.title, [Validators.required]],
@@ -38,6 +40,6 @@ export class PostComponent implements OnInit {
         console.log(data);
       }
     );
-    //window.location.replace('/my-post');
+    
   }
 }

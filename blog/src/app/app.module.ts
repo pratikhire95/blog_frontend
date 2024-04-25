@@ -16,6 +16,7 @@ import { HttpService } from 'src/services/http.service';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { MypostComponent } from './mypost/mypost.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { MypostComponent } from './mypost/mypost.component';
     DashboardComponent,
     PostComponent,
     NavbarComponent,
-    MypostComponent
+    MypostComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,

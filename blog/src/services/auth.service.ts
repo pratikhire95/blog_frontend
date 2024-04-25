@@ -45,7 +45,7 @@ export class AuthService {
     this.fireauth.signOut().then( () => {
       sessionStorage.clear();
       localStorage.removeItem('token');
-      window.location.replace('/dashboard');
+      window.location.replace('/login');
     }, err => {
       alert(err.message);
     })
@@ -75,7 +75,8 @@ export class AuthService {
     return this.fireauth.signInWithPopup(new GoogleAuthProvider).then(res => {
       localStorage.setItem('token',JSON.stringify(res.user?.refreshToken));
       localStorage.setItem('userid', JSON.stringify(res.user?.uid));
-      this.router.navigate(['/dashboard']);
+      
+      window.location.replace('/dashboard');
       
     }, err => {
       alert(err.message);

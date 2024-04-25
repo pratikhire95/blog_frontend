@@ -1,31 +1,28 @@
-<section class="background-gradient overflow-hidden">
-  <div class="container px-1 py-1 px-md-5 text-center text-lg-start my-5">
-    <div class="row gx-lg-5 align-items-center mb-5">
-      <div class="col-lg-6 mb-5 mb-lg-0 my--1" style="z-index: 10">
-        <h1 class="mx-12 my-1 display-5 fw-bold ls-tight" style="color: teal">
+<section class="background-radial-gradient overflow-hidden">
+  <div class="container my-1">
+    <div class="row gy-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight">
           <b>Blogger</b><br />
-          <h3>
-            <span style="color: hsl(218, 81%, 75%)"
-              >Let's Spread the Knowledge</span
-            >
-          </h3>
+          <h3><span>Let's Spread the Knowledge</span></h3>
         </h1>
       </div>
 
-      <div class="position-relative">
-        <div class="container">
-          <div class="card">
-            <a class="singup">Sign UP</a>
-            <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
-              <div class="inputBox">
-                <input
-                  type="text"
-                  name="username"
-                  formControlName="username"
-                  [ngModel]="formModel.username"
-                  required="required"
-                />
-                <span>Username</span>
+      <div class="col-10 col-md-2 col-xl-5">
+        <div class="card bg-glass">
+          <div class="card-body p-4">
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-4 text-center">
+                  <h5>Register</h5>
+                </div>
+              </div>
+            </div>
+            <form class="form" [formGroup]="itemForm" (ngSubmit)="onRegister()">
+              <div class="form-outline mb-3">
+                <label for="Username" class="form-label">Username</label>
+
+                <input type="text" name="username" formControlName="username" />
                 <div
                   *ngIf="
                     itemForm.get('username')?.invalid &&
@@ -34,18 +31,14 @@
                   "
                   class="ng-dirty"
                 >
-                  <div class="text-danger fw-bold">Please Enter Username.</div>
+                  <span class="text-danger">Username Invalid.</span>
                 </div>
               </div>
-              <div class="inputBox1">
-                <input
-                  type="email"
-                  name="email"
-                  formControlName="email"
-                  [ngModel]="formModel.email"
-                  required="required"
-                />
-                <span class="user">Email ID</span>
+
+              <div class="form-outline mb-3">
+                <label for="Email" class="form-label">Email</label>
+
+                <input type="text" name="email" formControlName="email" />
                 <div
                   *ngIf="
                     itemForm.get('email')?.invalid &&
@@ -54,76 +47,47 @@
                   "
                   class="ng-dirty"
                 >
-                  <div
-                    *ngIf="itemForm.get('email')?.hasError('required')"
-                    class="text-danger fw-bold"
-                  >
-                    *Please Enter Email Id
-                  </div>
-                  <div
-                    *ngIf="itemForm.get('email')?.hasError('pattern')"
-                    class="text-danger fw-bold"
-                  >
-                    Invalid Email Id
-                  </div>
+                  <span class="text-danger">email Invalid.</span>
                 </div>
               </div>
-              <div class="inputBox">
+
+              <div class="form-outline mb-3">
+                <label for="password" class="form-label">Password</label>
                 <input
                   type="password"
                   name="password"
                   formControlName="password"
-                  [ngModel]="formModel.password"
-                  (input)="checkPasswordStrength()"
-                  required="required"
                 />
-                <span>Password</span>
                 <div
                   *ngIf="
-                    itemForm.get('password')?.dirty ||
-                    itemForm.get('password')?.touched
+                    itemForm.get('password')?.invalid &&
+                    (itemForm.get('password')?.dirty ||
+                      itemForm.get('password')?.touched)
                   "
                   class="ng-dirty"
                 >
-                  <div
-                    [style.color]="strengthColors[passwordStrength]"
-                    class="fw-bold"
-                  >
-                    {{ passwordStrength }}
-                  </div>
-                  <div class="text-danger">{{ passwordMessage }}</div>
-                  <div
-                    *ngIf="
-                      itemForm.get('password')?.hasError('required') &&
-                      itemForm.get('password')?.touched
-                    "
-                    class="text-danger fw-bold"
-                  >
-                    Password is Required.
-                  </div>
+                  <span class="text-danger">Password Invalid.</span>
                 </div>
               </div>
-              <div class="inputBox">
+              <div class="form-outline mb-3">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm Password</label
+                >
                 <input
                   type="password"
                   name="confirmPassword"
                   formControlName="confirmPassword"
-                  [ngModel]="formModel.confirmPassword"
-                  required="required"
                 />
-
-                <span>Confirm Password</span>
-
                 <div
                   *ngIf="
                     itemForm.get('confirmPassword')?.hasError('notSame') &&
-                    itemForm.get('confirmPassword')?.dirty
+                    (itemForm.get('confirmPassword')?.dirty ||
+                      itemForm.get('confirmPassword')?.touched)
                   "
-                  class="text-danger fw-bold"
+                  class="ng-dirty"
                 >
-                  Password do not match.
+                  <span class="text-danger">Password not matched</span>
                 </div>
-
                 <div
                   *ngIf="
                     !itemForm.get('confirmPassword')?.hasError('notSame') &&
@@ -134,24 +98,14 @@
                   Password Matched
                 </div>
               </div>
-
-              <!-- Register buttons -->
-              <button type="submit" class="enter" [disabled]="itemForm.invalid">
-                Submit
+              <button
+                type="submit"
+                class="btn btn-primary btn-block mb-4"
+                [disabled]="itemForm.invalid"
+              >
+                Sign Up
               </button>
             </form>
-          </div>
-
-          <!-- On Succesfull/Unsuccesful registration-->
-          <div
-            *ngIf="showMessage"
-            class="text text-success fw-bold"
-            role="text"
-          >
-            {{ responseMessage }}
-          </div>
-          <div *ngIf="showError" class="text text-success fw-bold" role="text">
-            {{ responseMessage }}
           </div>
         </div>
       </div>
